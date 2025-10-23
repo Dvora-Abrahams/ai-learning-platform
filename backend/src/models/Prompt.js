@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 const promptSchema = new mongoose.Schema({
   user_id: {
@@ -29,4 +29,5 @@ const promptSchema = new mongoose.Schema({
 }, {
   timestamps: true
 });
-module.exports = mongoose.model('Prompt', promptSchema);
+export const Prompt = mongoose.model("Prompt", promptSchema);
+export default Prompt;
