@@ -1,7 +1,8 @@
-const mongoose = require('mongoose');
-const connectDB = require('../config/db');
-const Category = require('../models/Category');
-const SubCategory = require('../models/SubCategory');
+import mongoose from "mongoose";
+import connectDB from "../config/db.js";
+import Category from "../models/Category.js";
+import SubCategory from "../models/SubCategory.js";
+
 
 const seedData = async () => {
   try {

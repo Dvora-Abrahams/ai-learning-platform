@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 const subCategorySchema = new mongoose.Schema({
   name: {
@@ -16,4 +16,5 @@ const subCategorySchema = new mongoose.Schema({
 });
 subCategorySchema.index({ name: 1, category_id: 1 }, { unique: true });
 
-module.exports = mongoose.model('SubCategory', subCategorySchema);
+export const SubCategory = mongoose.model('SubCategory', subCategorySchema);
+export default SubCategory;

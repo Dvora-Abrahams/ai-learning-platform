@@ -1,6 +1,7 @@
 {
   "name": "ai-learning-platform-backend",
   "version": "1.0.0",
+  "type": "module",
   "description": "AI-powered learning platform backend API",
   "main": "src/server.js",
   "scripts": {
@@ -18,9 +19,11 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.0.3",
     "openai": "^4.20.0"
   },
