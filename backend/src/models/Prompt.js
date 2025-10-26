@@ -29,5 +29,6 @@ const promptSchema = new mongoose.Schema({
 }, {
   timestamps: true
 });
+promptSchema.index({ user_id: 1, createdAt: -1 });
 export const Prompt = mongoose.model("Prompt", promptSchema);
 export default Prompt;

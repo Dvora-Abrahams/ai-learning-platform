@@ -1,9 +1,11 @@
 import express from "express";
-import { registerUser, getUserById } from "../controllers/userController.js";
+import { protect, adminOnly } from "../middleware/authMiddleware.js";
+import { getMe, getUser, getUsersAdmin } from "../controllers/userController.js";
 
 const router = express.Router();
 
-router.post("/", registerUser);
-router.get("/:id", getUserById);
+router.get("/me", protect, getMe);
+router.get("/:id", protect, getUser);
+router.get("/", protect, adminOnly, getUsersAdmin);
 
 export default router;

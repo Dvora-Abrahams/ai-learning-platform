@@ -1,22 +1,18 @@
-import { User } from "../models/User.js";
+import { asyncHandler } from "../middleware/asyncHandler.js";
+import { getUserById, listUsers } from "../services/userService.js";
 
-export async function registerUser(req, res) {
-  try {
-    const { name, email } = req.body;
-    const user = new User({ name, email });
-    await user.save();
-    res.status(201).json(user);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-}
+export const getMe = asyncHandler(async (req, res) => {
+  const me = await getUserById(req.user._id);
+  res.json(me);
+});
 
-export async function getUserById(req, res) {
-  try {
-    const user = await User.findById(req.params.id);
-    if (!user) return res.status(404).json({ message: "User not found" });
-    res.json(user);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-}
+export const getUser = asyncHandler(async (req, res) => {
+  const user = await getUserById(req.params.id);
+  if (!user) return res.status(404).json({ message: "User not found" });
+  res.json(user);
+});
+
+export const getUsersAdmin = asyncHandler(async (req, res) => {
+  const users = await listUsers();
+  res.json(users);
+});
