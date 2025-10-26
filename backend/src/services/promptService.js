@@ -1,78 +1,224 @@
-// src/services/promptService.js
-import { Prompt } from "../models/Prompt.js";
+// import { Prompt } from "../models/Prompt.js";
 
-// נאתחל לקוח OpenAI רק אם יש מפתח בסביבה
+// let openai = null;
+// if (process.env.OPENAI_API_KEY) {
+//   try {
+//     const { default: OpenAI } = await import("openai");
+//     openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+//   } catch (e) {
+//     console.error("OpenAI SDK init failed:", e?.message || e);
+//     openai = null;
+//   }
+// }
+
+// const aiGenerate = async ({ userPrompt, categoryName, subCategoryName }) => {
+//   if (!openai) {
+//     return `Mock AI response:
+// - Category: ${categoryName || "N/A"}
+// - Sub-category: ${subCategoryName || "N/A"}
+// - Prompt: ${userPrompt}
+
+// (For real AI output, set OPENAI_API_KEY in .env)`;
+//   }
+
+//   const system = `You are an educational content generator.
+// Given a category and sub-category, create a concise, structured learning response.
+// Return sections: Intro (2-3 lines), 3-5 bullet points, and a short practical exercise.
+// Keep it clear and beginner-friendly.`;
+
+//   const user = `Category: ${categoryName || "Unknown"}
+// Sub-category: ${subCategoryName || "Unknown"}
+// Task: ${userPrompt}`;
+
+//   try {
+//     // SDK v4 – chat completions
+//     const completion = await openai.chat.completions.create({
+//       model: "gpt-4o-mini",
+//       messages: [
+//         { role: "system", content: system },
+//         { role: "user", content: user },
+//       ],
+//       temperature: 0.4,
+//       max_tokens: 600,
+//     });
+
+//     const text = completion.choices?.[0]?.message?.content?.trim();
+//     return text || "No AI response.";
+//   } catch (err) {
+//     // לא נכשלים – מחזירים הודעת Mock ידידותית להמשך פיתוח
+//     console.error("OpenAI error:", err?.message || err);
+//     return `AI error occurred; returning fallback content.
+// Prompt: ${userPrompt}
+// (Details hidden in server logs)`;
+//   }
+// };
+
+// // יצירה ושמירה של Prompt במסד
+// export const createPrompt = async ({
+//   user_id,
+//   category_id,
+//   sub_category_id,
+//   prompt,
+//   categoryName,      // אופציונלי: אם יש לך את השמות
+//   subCategoryName,   // אופציונלי
+// }) => {
+//   const response = await aiGenerate({ userPrompt: prompt, categoryName, subCategoryName });
+//   return Prompt.create({ user_id, category_id, sub_category_id, prompt, response });
+// };
+
+// // היסטוריית פרומפטים של משתמש
+// export const listUserPrompts = (userId) =>
+//   Prompt.find({ user_id: userId })
+//     .populate("category_id", "name")
+//     .populate("sub_category_id", "name")
+//     .sort({ createdAt: -1 });
+import { Prompt } from "../models/Prompt.js";
+import { Category } from "../models/Category.js";
+import { SubCategory } from "../models/SubCategory.js";
+import OpenAI from "openai";
+import env from "../config/env.js";
+
+// Initialize OpenAI client
 let openai = null;
-if (process.env.OPENAI_API_KEY) {
+if (env.openaiApiKey) {
   try {
-    const { default: OpenAI } = await import("openai");
-    openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+    openai = new OpenAI({ apiKey: env.openaiApiKey });
+    console.log("✅ OpenAI client initialized");
   } catch (e) {
-    console.error("OpenAI SDK init failed:", e?.message || e);
+    console.error("❌ OpenAI SDK init failed:", e?.message || e);
     openai = null;
   }
+} else {
+  console.warn("⚠️  No OPENAI_API_KEY found - using mock responses");
 }
 
-// מחולל תשובה מה-AI (או Mock אם אין מפתח)
+/**
+ * Generate AI response (or mock if no API key)
+ */
 const aiGenerate = async ({ userPrompt, categoryName, subCategoryName }) => {
-  // אין מפתח — נחזיר תשובה מדומה אבל שימושית
+  // No API key - return mock response
   if (!openai) {
-    return `Mock AI response:
-- Category: ${categoryName || "N/A"}
-- Sub-category: ${subCategoryName || "N/A"}
-- Prompt: ${userPrompt}
+    return `Mock AI Response:
+
+📚 Category: ${categoryName || "N/A"}
+📖 Sub-category: ${subCategoryName || "N/A"}
+❓ Your Question: ${userPrompt}
+
+Introduction:
+This is a mock response. To get real AI-generated lessons, please set your OPENAI_API_KEY in the .env file.
+
+Key Points:
+• Point 1: This is a placeholder response
+• Point 2: Real AI will provide detailed, educational content
+• Point 3: The system is working correctly, just needs an API key
+
+Practice Exercise:
+Try setting up your OpenAI API key to unlock full functionality!
 
 (For real AI output, set OPENAI_API_KEY in .env)`;
   }
 
-  const system = `You are an educational content generator.
-Given a category and sub-category, create a concise, structured learning response.
-Return sections: Intro (2-3 lines), 3-5 bullet points, and a short practical exercise.
-Keep it clear and beginner-friendly.`;
+  const systemMessage = `You are an expert educator specializing in ${categoryName}.
+Create a clear, engaging, and structured lesson about ${subCategoryName}.
 
-  const user = `Category: ${categoryName || "Unknown"}
-Sub-category: ${subCategoryName || "Unknown"}
-Task: ${userPrompt}`;
+Format your response as follows:
+1. Introduction (2-3 sentences explaining the concept)
+2. Key Concepts (3-5 bullet points with clear explanations)
+3. Practical Example (real-world application)
+4. Practice Exercise (something the learner can try)
+
+Keep the language simple and beginner-friendly.`;
+
+  const userMessage = `Topic: ${categoryName} → ${subCategoryName}
+Question/Task: ${userPrompt}
+
+Please provide a comprehensive educational response following the structure above.`;
 
   try {
-    // SDK v4 – chat completions
     const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: "gpt-3.5-turbo",
       messages: [
-        { role: "system", content: system },
-        { role: "user", content: user },
+        { role: "system", content: systemMessage },
+        { role: "user", content: userMessage },
       ],
-      temperature: 0.4,
-      max_tokens: 600,
+      temperature: 0.7,
+      max_tokens: 1000,
     });
 
     const text = completion.choices?.[0]?.message?.content?.trim();
-    return text || "No AI response.";
+    return text || "No AI response generated.";
   } catch (err) {
-    // לא נכשלים – מחזירים הודעת Mock ידידותית להמשך פיתוח
-    console.error("OpenAI error:", err?.message || err);
-    return `AI error occurred; returning fallback content.
-Prompt: ${userPrompt}
-(Details hidden in server logs)`;
+    console.error("❌ OpenAI API error:", err?.message || err);
+
+    // Return friendly fallback
+    return `⚠️ AI Error Occurred
+
+We encountered an issue generating the AI response. Here's what you asked about:
+
+Topic: ${categoryName} → ${subCategoryName}
+Your Question: ${userPrompt}
+
+Error Details (for debugging):
+${err?.message || "Unknown error"}
+
+Please check:
+1. Your OpenAI API key is valid
+2. You have sufficient API credits
+3. The OpenAI service is accessible
+
+You can try again or contact support if the issue persists.`;
   }
 };
 
-// יצירה ושמירה של Prompt במסד
+/**
+ * Create a new prompt and generate AI response
+ * FIXED: Now fetches category and subcategory names
+ */
 export const createPrompt = async ({
   user_id,
   category_id,
   sub_category_id,
   prompt,
-  categoryName,      // אופציונלי: אם יש לך את השמות
-  subCategoryName,   // אופציונלי
 }) => {
-  const response = await aiGenerate({ userPrompt: prompt, categoryName, subCategoryName });
-  return Prompt.create({ user_id, category_id, sub_category_id, prompt, response });
+  // Fetch category and subcategory names
+  const category = await Category.findById(category_id);
+  const subCategory = await SubCategory.findById(sub_category_id);
+
+  const categoryName = category?.name || "Unknown Category";
+  const subCategoryName = subCategory?.name || "Unknown SubCategory";
+
+  // Generate AI response
+  const response = await aiGenerate({
+    userPrompt: prompt,
+    categoryName,
+    subCategoryName,
+  });
+
+  // Save to database
+  const newPrompt = await Prompt.create({
+    user_id,
+    category_id,
+    sub_category_id,
+    prompt,
+    response,
+  });
+
+  // Populate references before returning
+  await newPrompt.populate([
+    { path: "user_id", select: "name phone role" },
+    { path: "category_id", select: "name" },
+    { path: "sub_category_id", select: "name" },
+  ]);
+
+  return newPrompt;
 };
 
-// היסטוריית פרומפטים של משתמש
-export const listUserPrompts = (userId) =>
-  Prompt.find({ user_id: userId })
+/**
+ * Get user's learning history
+ */
+export const listUserPrompts = async (userId) => {
+  return Prompt.find({ user_id: userId })
     .populate("category_id", "name")
     .populate("sub_category_id", "name")
     .sort({ createdAt: -1 });
+};

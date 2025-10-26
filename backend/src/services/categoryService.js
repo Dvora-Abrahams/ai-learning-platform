@@ -5,3 +5,7 @@ export const listCategories = async () =>
 
 export const createCategory = async (name) =>
   Category.create({ name });
+
+export const getCategoryById = async (id) => {
+  return Category.findById(id);
+};

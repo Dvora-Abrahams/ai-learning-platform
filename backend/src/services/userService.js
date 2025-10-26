@@ -5,3 +5,7 @@ export const getUserById = async (id) =>
 
 export const listUsers = async () =>
   User.find().select("-password");
+
+export const createUser = async ({ name, phone }) => {
+  return User.create({ name, phone });
+};
