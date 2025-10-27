@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://ai-learning-platform-production-6871.up.railway.app/api';
+// Force production URL for now
+const API_BASE_URL = 'https://ai-learning-platform-production-6871.up.railway.app/api';
 console.log('🔍 API_BASE_URL:', API_BASE_URL);
-console.log('🔍 VITE_API_URL:', import.meta.env.VITE_API_URL);
 
 const api = axios.create({
   baseURL: API_BASE_URL,
