@@ -59,6 +59,17 @@ console.log('✅ All routes loaded');
 
 // ping/health
 app.get("/api/health", (_, res) => res.json({ ok: true }));
+
+// Temporary seed endpoint
+app.get("/api/seed", async (req, res) => {
+  try {
+    const { execSync } = await import('child_process');
+    execSync('npm run seed', { cwd: process.cwd() });
+    res.json({ message: 'Database seeded successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 app.use(notFound);
 app.use(errorHandler);
 
