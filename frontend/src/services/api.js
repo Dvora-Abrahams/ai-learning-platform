@@ -1,8 +1,11 @@
 import axios from 'axios';
 
-// Force production URL for now
-const API_BASE_URL = 'https://ai-learning-platform-production-6871.up.railway.app/api';
+// VERCEL FIX - Updated at $(new Date().toISOString())
+const RAILWAY_URL = 'https://ai-learning-platform-production-6871.up.railway.app/api';
+const API_BASE_URL = RAILWAY_URL;
 console.log('🔍 API_BASE_URL:', API_BASE_URL);
+console.log('🔍 RAILWAY_URL:', RAILWAY_URL);
+console.log('🔍 Current time:', new Date().toISOString());
 
 const api = axios.create({
   baseURL: API_BASE_URL,
