@@ -1,290 +1,173 @@
-# AI Learning Platform - Backend API
+# 🎓 AI Learning Platform
 
-A production-grade REST API for an AI-powered learning platform built with Node.js, Express, MongoDB, and OpenAI GPT integration.
+> Advanced learning platform powered by artificial intelligence
 
-##  Features
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://your-app.vercel.app)
+[![Backend API](https://img.shields.io/badge/API-Live-blue)](https://your-backend.railway.app)
 
-- **User Management**: Register users with name and phone
-- **Category System**: Hierarchical categories and subcategories for learning topics
-- **AI-Powered Lessons**: Generate educational content using OpenAI GPT-3.5
-- **Learning History**: Track all user prompts and AI responses
-- **Admin Dashboard**: View all users, their learning history, and platform statistics
-- **Input Validation**: Comprehensive validation and error handling
-- **RESTful Architecture**: Clean, modular code structure
+## 🌟 Features
 
-##  Prerequisites
+- **🤖 AI-Powered Learning** - Get personalized lessons from OpenAI GPT
+- **👥 User Management** - Secure authentication with JWT
+- **📊 Admin Dashboard** - User management with pagination and filtering
+- **📚 Learning History** - Track your progress and view past lessons
+- **🎯 Category System** - Organized learning topics and subtopics
+- **📱 Responsive Design** - Works on all devices
+- **🔒 Role-Based Access** - User and Admin permissions
 
-- Node.js (v14 or higher)
-- MongoDB (v4.4 or higher)
-- Docker & Docker Compose (optional, for MongoDB)
-- OpenAI API Key
+## 🚀 Live Demo
 
-##  Tech Stack
+**🌐 Frontend:** [https://your-app.vercel.app](https://your-app.vercel.app)
+**🔗 Backend API:** [https://your-backend.railway.app](https://your-backend.railway.app)
 
-- **Runtime**: Node.js
-- **Framework**: Express.js
-- **Database**: MongoDB with Mongoose ODM
-- **AI Integration**: OpenAI GPT-3.5 Turbo
-- **Validation**: Custom middleware
-- **Error Handling**: Centralized error handler
+### Demo Credentials
 
-##  Project Structure
+**Admin User:**
+- Phone: `0500000000`
+- Password: `admin123`
 
-```
-backend/
-├── src/
-│   ├── config/
-│   │   ├── database.js       # MongoDB connection
-│   │   └── env.js            # Environment configuration
-│   ├── models/
-│   │   ├── User.js           # User schema
-│   │   ├── Category.js       # Category schema
-│   │   ├── SubCategory.js    # SubCategory schema
-│   │   └── Prompt.js         # Prompt schema
-│   ├── controllers/
-│   │   ├── userController.js
-│   │   ├── categoryController.js
-│   │   ├── promptController.js
-│   │   └── adminController.js
-│   ├── services/
-│   │   └── openaiService.js  # OpenAI integration
-│   ├── routes/
-│   │   ├── userRoutes.js
-│   │   ├── categoryRoutes.js
-│   │   ├── promptRoutes.js
-│   │   └── adminRoutes.js
-│   ├── middleware/
-│   │   ├── errorHandler.js   # Global error handler
-│   │   └── validator.js      # Input validation
-│   ├── scripts/
-│   │   └── seedDatabase.js   # Database seeding
-│   └── app.js                # Express app setup
-├── server.js                 # Entry point
-├── package.json
-├── docker-compose.yml
-├── .env.example
-├── .gitignore
-└── README.md
-```
+**Regular User:**
+- Phone: `0501234567`
+- Password: `test123`
 
-##  Installation
+## 🛠️ Tech Stack
 
-### 1. Clone the Repository
+### Backend
+- **Node.js** - Runtime environment
+- **Express.js** - Web framework
+- **MongoDB** - Database
+- **Mongoose** - ODM
+- **JWT** - Authentication
+- **OpenAI API** - AI integration
+- **bcryptjs** - Password hashing
 
+### Frontend
+- **React 19** - UI library
+- **React Router** - Navigation
+- **Axios** - HTTP client
+- **CSS Modules** - Styling
+- **Vite** - Build tool
+
+### Deployment
+- **Railway** - Backend hosting
+- **Vercel** - Frontend hosting
+- **MongoDB Atlas** - Database hosting
+
+## 📦 Installation & Setup
+
+### Prerequisites
+- Node.js 18+
+- MongoDB (local or Atlas)
+- OpenAI API Key (optional)
+
+### Backend Setup
 ```bash
-git clone <your-repo-url>
 cd backend
-```
-
-### 2. Install Dependencies
-
-```bash
 npm install
-```
-
-### 3. Set Up Environment Variables
-
-Create a `.env` file in the root directory:
-
-```bash
 cp .env.example .env
-```
-
-Edit `.env` with your configuration:
-
-```env
-PORT=5000
-MONGODB_URI=mongodb://localhost:27017/ai-learning-platform
-OPENAI_API_KEY=
-NODE_ENV=development
-```
-
-### 4. Start MongoDB
-
-**Option A: Using Docker (Recommended)**
-
-```bash
-docker-compose up -d
-```
-
-**Option B: Local MongoDB**
-
-Make sure MongoDB is installed and running on your system.
-
-### 5. Seed the Database
-
-```bash
+# Edit .env with your configuration
 npm run seed
-```
-
-This will populate categories and subcategories (Science/Space, Mathematics/Algebra, etc.)
-
-### 6. Start the Server
-
-**Development mode (with auto-restart):**
-
-```bash
 npm run dev
 ```
 
-**Production mode:**
-
+### Frontend Setup
 ```bash
-npm start
+cd frontend
+npm install
+cp .env.example .env.local
+# Edit .env.local with your API URL
+npm run dev
 ```
 
-Server will run on `http://localhost:5000`
+## 🚀 Deployment
 
-##  API Endpoints
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions.
 
-### Health Check
+## 📁 Project Structure
 
 ```
-GET /health
+ai-learning-platform/
+├── backend/
+│   ├── src/
+│   │   ├── controllers/     # Request handlers
+│   │   ├── models/         # Database models
+│   │   ├── routes/         # API routes
+│   │   ├── services/       # Business logic
+│   │   ├── middleware/     # Custom middleware
+│   │   ├── config/         # Configuration
+│   │   └── scripts/        # Utility scripts
+│   └── package.json
+├── frontend/
+│   ├── src/
+│   │   ├── components/     # React components
+│   │   ├── pages/         # Page components
+│   │   ├── services/      # API services
+│   │   ├── context/       # React context
+│   │   └── hooks/         # Custom hooks
+│   └── package.json
+└── README.md
 ```
+
+## 🎯 API Endpoints
+
+### Authentication
+- `POST /api/auth/register` - User registration
+- `POST /api/auth/login` - User login
 
 ### Users
-
-```
-POST   /api/users              # Register new user
-GET    /api/users/:id          # Get user by ID
-```
+- `GET /api/users/profile` - Get user profile
+- `PUT /api/users/profile` - Update profile
 
 ### Categories
-
-```
-GET    /api/categories                    # Get all categories
-GET    /api/categories/:id/subcategories  # Get subcategories
-POST   /api/categories                    # Create category (admin)
-POST   /api/categories/:id/subcategories  # Create subcategory (admin)
-```
+- `GET /api/categories` - Get all categories
+- `GET /api/categories/:id/subcategories` - Get subcategories
 
 ### Prompts
-
-```
-POST   /api/prompts                 # Create prompt & get AI lesson
-GET    /api/prompts/user/:userId    # Get user's learning history
-```
+- `POST /api/prompts` - Create new prompt
+- `GET /api/prompts/me` - Get user's prompts
 
 ### Admin
+- `GET /api/admin/users` - Get all users (paginated)
+- `GET /api/admin/users/:id/prompts` - Get user's prompts
+- `DELETE /api/admin/users/:id` - Delete user
 
-```
-GET    /api/admin/users     # Get all users with their prompts
-GET    /api/admin/stats     # Get platform statistics
-```
+## 🏆 Bonus Features Implemented
 
-##  API Usage Examples
+- ✅ **JWT Authentication** - Secure token-based auth
+- ✅ **Pagination & Filtering** - Advanced admin panel
+- ✅ **User Management** - Complete CRUD operations
+- ✅ **Live Deployment** - Production-ready hosting
 
-### 1. Register a User
-
-```bash
-curl -X POST http://localhost:5000/api/users \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Israel Cohen",
-    "phone": "0501234567"
-  }'
-```
-
-### 2. Get All Categories
+## 🧪 Testing
 
 ```bash
-curl http://localhost:5000/api/categories
+# Backend tests
+cd backend
+npm test
+
+# Frontend tests
+cd frontend
+npm test
 ```
 
-### 3. Create a Prompt (Get AI Lesson)
+## 📄 License
 
-```bash
-curl -X POST http://localhost:5000/api/prompts \
-  -H "Content-Type: application/json" \
-  -d '{
-    "user_id": "USER_ID_HERE",
-    "category_id": "CATEGORY_ID_HERE",
-    "sub_category_id": "SUBCATEGORY_ID_HERE",
-    "prompt": "Teach me about black holes"
-  }'
-```
+MIT License - see [LICENSE](LICENSE) file for details.
 
-### 4. Get User's Learning History
+## 👨‍💻 Author
 
-```bash
-curl http://localhost:5000/api/prompts/user/USER_ID_HERE
-```
+**Your Name**
+- GitHub: [@yourusername](https://github.com/yourusername)
+- LinkedIn: [Your LinkedIn](https://linkedin.com/in/yourprofile)
 
-### 5. Admin: Get All Users
+## 🤝 Contributing
 
-```bash
-curl http://localhost:5000/api/admin/users
-```
-
-##  Database Schema
-
-### Users Collection
-- `name`: String (required, min 2 chars)
-- `phone`: String (required, unique, 10-15 digits)
-- `timestamps`: createdAt, updatedAt
-
-### Categories Collection
-- `name`: String (required, unique)
-- `timestamps`: createdAt, updatedAt
-
-### SubCategories Collection
-- `name`: String (required)
-- `category_id`: ObjectId (ref: Category)
-- Unique compound index: (name, category_id)
-
-### Prompts Collection
-- `user_id`: ObjectId (ref: User)
-- `category_id`: ObjectId (ref: Category)
-- `sub_category_id`: ObjectId (ref: SubCategory)
-- `prompt`: String (required, min 5 chars)
-- `response`: String (AI-generated)
-- `timestamps`: createdAt, updatedAt
-
-##  Validation & Error Handling
-
-- **Input Validation**: All endpoints validate required fields and formats
-- **MongoDB Validation**: Schema-level validation with custom error messages
-- **ObjectId Validation**: Validates MongoDB IDs before database queries
-- **Centralized Error Handler**: Consistent error responses across the API
-- **Duplicate Prevention**: Unique constraints on phone and category names
-
-##  Testing the API
-
-Use tools like:
-- **Postman**: Import and test all endpoints
-- **curl**: Command-line testing (examples above)
-- **Thunder Client** (VS Code extension)
-- **Insomnia**: API client
-
-## Deployment Recommendations
-
-- **Environment Variables**: Use secure secrets management
-- **MongoDB**: Deploy on MongoDB Atlas or similar cloud service
-- **API Keys**: Rotate OpenAI keys regularly
-- **CORS**: Configure allowed origins for production
-- **Rate Limiting**: Add rate limiting middleware (express-rate-limit)
-- **Logging**: Implement Winston or Morgan for production logging
-- **Process Manager**: Use PM2 for production deployment
-
-##  Notes
-
-- The OpenAI API key provided is for development only
-- Seed script creates 5 categories with 4 subcategories each
-- All timestamps are in ISO 8601 format
-- Phone numbers accept 10-15 digits only
-- AI responses are limited to 1000 tokens
-
-##  Contributing
-
-Feel free to submit issues and enhancement requests!
-
-##  License
-
-MIT License
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ---
 
-**Author**: [Your Name]  
-**Contact**: [Your Email]  
-**Repository**: [GitHub URL]
+⭐ **Star this repo if you found it helpful!**
