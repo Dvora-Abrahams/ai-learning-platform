@@ -11,8 +11,9 @@ async function startServer() {
     console.log("✅ MongoDB connected successfully");
 
     // הפעלת השרת
-    app.listen(env.PORT, () => {
-      console.log(`🚀 Server is running on http://localhost:${env.PORT}`);
+    const PORT = process.env.PORT || env.PORT || 5000;
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`🚀 Server is running on port ${PORT}`);
     });
   } catch (err) {
     console.error("❌ Failed to start server:", err.message);
