@@ -1,6 +1,8 @@
 import connectDB from "./config/db.js";
 import  env from "./config/env.js";
 import app from "./app.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 async function startServer() {
   try {
