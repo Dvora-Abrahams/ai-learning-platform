@@ -51,25 +51,56 @@ export const platformStats = async () => {
 };
 
 /**
- * Get all users with their prompts
+ * Get all users (simplified)
  */
-export const listAllUsersWithPrompts = async () => {
-  const users = await User.find().select("-password");
+export const listAllUsersWithPrompts = async (page = 1, limit = 10, search = '', role = '') => {
+  const skip = (page - 1) * limit;
+  
+  // Build filter
+  const filter = {};
+  if (search) {
+    filter.$or = [
+      { name: { $regex: search, $options: 'i' } },
+      { phone: { $regex: search, $options: 'i' } }
+    ];
+  }
+  if (role) {
+    filter.role = role;
+  }
+  
+  const [users, total] = await Promise.all([
+    User.find(filter)
+      .select("-password")
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit),
+    User.countDocuments(filter)
+  ]);
+  
+  return {
+    users,
+    pagination: {
+      page,
+      limit,
+      total,
+      pages: Math.ceil(total / limit)
+    }
+  };
+};
 
-  const usersWithPrompts = await Promise.all(
-    users.map(async (user) => {
-      const prompts = await Prompt.find({ user_id: user._id })
-        .populate("category_id", "name")
-        .populate("sub_category_id", "name")
-        .sort({ createdAt: -1 });
-
-      return {
-        user: user,
-        promptsCount: prompts.length,
-        prompts: prompts,
-      };
-    })
-  );
-
-  return usersWithPrompts;
+/**
+ * Delete user and all related data
+ */
+export const deleteUserById = async (userId) => {
+  // Delete user's prompts first
+  await Prompt.deleteMany({ user_id: userId });
+  
+  // Delete the user
+  const deletedUser = await User.findByIdAndDelete(userId);
+  
+  if (!deletedUser) {
+    throw new Error('User not found');
+  }
+  
+  return deletedUser;
 };

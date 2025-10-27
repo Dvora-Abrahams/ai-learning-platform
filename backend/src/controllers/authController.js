@@ -35,20 +35,28 @@ export const registerUser = async (req, res) => {
 export const loginUser = async (req, res) => {
   try {
     const { phone, password } = req.body;
+    console.log('Login attempt:', { phone, password });
 
     const user = await User.findOne({ phone });
+    console.log('User found:', user ? { id: user._id, name: user.name, role: user.role } : 'No user found');
+    
     if (!user) return res.status(400).json({ message: "Invalid credentials" });
 
     const ok = await user.comparePassword(password);
+    console.log('Password check result:', ok);
+    
     if (!ok) return res.status(400).json({ message: "Invalid credentials" });
 
     const token = signToken(user);
+    console.log('Login successful for user:', user.name, 'Role:', user.role);
+    
     res.json({
       message: "Login successful",
       user: { id: user._id, name: user.name, phone: user.phone, role: user.role },
       token,
     });
   } catch (err) {
+    console.error('Login error:', err);
     res.status(500).json({ message: "Login failed", error: err.message });
   }
 };
