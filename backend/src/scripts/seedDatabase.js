@@ -31,7 +31,7 @@ const seedData = async () => {
       role: "admin",
     });
 
-    console.log("✅ Admin user created:");
+    console.log(" Admin user created:");
     console.log("   Phone: 0500000000");
     console.log("   Password: admin123");
 
@@ -45,7 +45,7 @@ const seedData = async () => {
       role: "user",
     });
 
-    console.log("✅ Test user created:");
+    console.log(" Test user created:");
     console.log("   Phone: 0501234567");
     console.log("   Password: test123");
 
@@ -60,9 +60,9 @@ const seedData = async () => {
       { name: "Languages" },
     ]);
 
-    console.log("✅ Categories seeded:", categories.length);
+    console.log(" Categories seeded:", categories.length);
 
-    console.log("🌱 Seeding SubCategories...");
+    console.log(" Seeding SubCategories...");
 
     // Seed SubCategories
     const subCategories = [
@@ -99,23 +99,23 @@ const seedData = async () => {
 
     await SubCategory.insertMany(subCategories);
 
-    console.log("✅ SubCategories seeded:", subCategories.length);
-    console.log("\n🎉 Database seeding completed successfully!");
+    console.log(" SubCategories seeded:", subCategories.length);
+    console.log("\n Database seeding completed successfully!");
     console.log("\n" + "=".repeat(50));
-    console.log("📊 SEEDED DATA SUMMARY:");
+    console.log(" SEEDED DATA SUMMARY:");
     console.log("=".repeat(50));
-    console.log("\n👥 Users:");
+    console.log("\n Users:");
     console.log("   • Admin - Phone: 0500000000, Password: admin123");
     console.log("   • Test User - Phone: 0501234567, Password: test123");
-    console.log("\n📁 Categories: 5");
+    console.log("\n Categories: 5");
     console.log("   • Science");
     console.log("   • Mathematics");
     console.log("   • Technology");
     console.log("   • History");
     console.log("   • Languages");
-    console.log("\n📂 SubCategories: 20 (4 per category)");
+    console.log("\n SubCategories: 20 (4 per category)");
     console.log("\n" + "=".repeat(50));
-    console.log("\n🔐 TEST LOGIN CREDENTIALS:");
+    console.log("\n TEST LOGIN CREDENTIALS:");
     console.log("=".repeat(50));
     console.log("\nAdmin:");
     console.log("  POST /api/auth/login");
@@ -126,10 +126,10 @@ const seedData = async () => {
     console.log("\n" + "=".repeat(50));
 
     await mongoose.connection.close();
-    console.log("\n✅ Database connection closed");
+    console.log("\n Database connection closed");
     process.exit(0);
   } catch (error) {
-    console.error("❌ Seeding error:", error.message);
+    console.error(" Seeding error:", error.message);
     await mongoose.connection.close();
     process.exit(1);
   }

@@ -51,25 +51,9 @@ export const platformStats = async () => {
 };
 
 /**
- * Get all users with their prompts
+ * Get all users (simplified)
  */
 export const listAllUsersWithPrompts = async () => {
-  const users = await User.find().select("-password");
-
-  const usersWithPrompts = await Promise.all(
-    users.map(async (user) => {
-      const prompts = await Prompt.find({ user_id: user._id })
-        .populate("category_id", "name")
-        .populate("sub_category_id", "name")
-        .sort({ createdAt: -1 });
-
-      return {
-        user: user,
-        promptsCount: prompts.length,
-        prompts: prompts,
-      };
-    })
-  );
-
-  return usersWithPrompts;
+  const users = await User.find().select("-password").sort({ createdAt: -1 });
+  return users;
 };
