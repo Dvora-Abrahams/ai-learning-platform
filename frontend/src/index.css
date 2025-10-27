@@ -63,6 +63,15 @@ body {
   color: white;
 }
 
+.btn-danger {
+  background-color: #dc2626;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #b91c1c;
+}
+
 .form-group {
   margin-bottom: 20px;
 }

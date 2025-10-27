@@ -7,17 +7,38 @@ const Admin = () => {
   const [userPrompts, setUserPrompts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  
+  // Pagination and filtering
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 10,
+    total: 0,
+    pages: 0
+  });
+  const [filters, setFilters] = useState({
+    search: '',
+    role: ''
+  });
 
   useEffect(() => {
     loadUsers();
-  }, []);
+  }, [pagination.page, filters]);
 
   const loadUsers = async () => {
     try {
       console.log('Admin: Loading users from API...');
-      const response = await adminAPI.getAllUsers();
+      const params = {
+        page: pagination.page,
+        limit: pagination.limit,
+        search: filters.search,
+        role: filters.role
+      };
+      
+      const response = await adminAPI.getAllUsers(params);
       console.log('Admin: Users loaded:', response.data);
-      setUsers(response.data);
+      
+      setUsers(response.data.users);
+      setPagination(response.data.pagination);
     } catch (err) {
       console.error('Admin: Error loading users:', err);
       setError('Error loading users: ' + (err.response?.data?.message || err.message));
@@ -37,6 +58,43 @@ const Admin = () => {
       console.error('Admin: Error loading user prompts:', err);
       setError('Error loading user activity: ' + (err.response?.data?.message || err.message));
     }
+  };
+
+  const deleteUser = async (userId, userName) => {
+    if (!window.confirm(`Are you sure you want to delete user "${userName}"? This action cannot be undone.`)) {
+      return;
+    }
+
+    try {
+      console.log('Admin: Deleting user:', userId);
+      await adminAPI.deleteUser(userId);
+      console.log('Admin: User deleted successfully');
+      
+      // Refresh users list
+      loadUsers();
+      
+      // Clear selected user if it was deleted
+      if (selectedUser?._id === userId) {
+        setSelectedUser(null);
+        setUserPrompts([]);
+      }
+      
+      setError('');
+    } catch (err) {
+      console.error('Admin: Error deleting user:', err);
+      setError('Error deleting user: ' + (err.response?.data?.message || err.message));
+    }
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    setPagination(prev => ({ ...prev, page: 1 }));
+    loadUsers();
+  };
+
+  const handleFilterChange = (key, value) => {
+    setFilters(prev => ({ ...prev, [key]: value }));
+    setPagination(prev => ({ ...prev, page: 1 }));
   };
 
   const formatDate = (dateString) => {
@@ -79,7 +137,7 @@ const Admin = () => {
         }}>
           <div style={{ textAlign: 'center', padding: '20px' }}>
             <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#3b82f6' }}>
-              {users.length}
+              {pagination.total}
             </div>
             <div style={{ color: '#6b7280' }}>Total Users</div>
           </div>
@@ -94,6 +152,41 @@ const Admin = () => {
               {users.filter(u => u.role === 'user').length}
             </div>
             <div style={{ color: '#6b7280' }}>Regular Users</div>
+          </div>
+        </div>
+
+        {/* Filters */}
+        <div style={{ 
+          display: 'grid', 
+          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
+          gap: '16px',
+          marginBottom: '24px',
+          padding: '20px',
+          backgroundColor: '#f8fafc',
+          borderRadius: '8px'
+        }}>
+          <div className="form-group" style={{ margin: 0 }}>
+            <label className="form-label">Search Users</label>
+            <input
+              type="text"
+              value={filters.search}
+              onChange={(e) => handleFilterChange('search', e.target.value)}
+              className="form-input"
+              placeholder="Search by name or phone..."
+            />
+          </div>
+          
+          <div className="form-group" style={{ margin: 0 }}>
+            <label className="form-label">Filter by Role</label>
+            <select
+              value={filters.role}
+              onChange={(e) => handleFilterChange('role', e.target.value)}
+              className="form-select"
+            >
+              <option value="">All Roles</option>
+              <option value="user">Users</option>
+              <option value="admin">Admins</option>
+            </select>
           </div>
         </div>
 
@@ -143,19 +236,61 @@ const Admin = () => {
                     {formatDate(user.createdAt)}
                   </td>
                   <td style={{ padding: '12px', textAlign: 'center' }}>
-                    <button
-                      onClick={() => loadUserPrompts(user._id)}
-                      className="btn btn-outline"
-                      style={{ fontSize: '14px', padding: '6px 12px' }}
-                    >
-                      View Activity
-                    </button>
+                    <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                      <button
+                        onClick={() => loadUserPrompts(user._id)}
+                        className="btn btn-outline"
+                        style={{ fontSize: '14px', padding: '6px 12px' }}
+                      >
+                        View Activity
+                      </button>
+                      <button
+                        onClick={() => deleteUser(user._id, user.name)}
+                        className="btn btn-danger"
+                        style={{ fontSize: '14px', padding: '6px 12px' }}
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
+
+        {/* Pagination */}
+        {pagination.pages > 1 && (
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center',
+            gap: '8px',
+            marginTop: '24px'
+          }}>
+            <button
+              onClick={() => setPagination(prev => ({ ...prev, page: prev.page - 1 }))}
+              disabled={pagination.page === 1}
+              className="btn btn-outline"
+              style={{ fontSize: '14px', padding: '8px 12px' }}
+            >
+              Previous
+            </button>
+            
+            <span style={{ margin: '0 16px', color: '#6b7280' }}>
+              Page {pagination.page} of {pagination.pages} ({pagination.total} total)
+            </span>
+            
+            <button
+              onClick={() => setPagination(prev => ({ ...prev, page: prev.page + 1 }))}
+              disabled={pagination.page === pagination.pages}
+              className="btn btn-outline"
+              style={{ fontSize: '14px', padding: '8px 12px' }}
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
 
       {selectedUser && (

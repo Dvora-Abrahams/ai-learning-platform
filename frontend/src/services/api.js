@@ -38,8 +38,9 @@ export const promptsAPI = {
 
 // Admin API
 export const adminAPI = {
-  getAllUsers: () => api.get('/admin/users'),
+  getAllUsers: (params = {}) => api.get('/admin/users', { params }),
   getUserPrompts: (userId) => api.get(`/admin/users/${userId}/prompts`),
+  deleteUser: (userId) => api.delete(`/admin/users/${userId}`),
 };
 
 export default api;
