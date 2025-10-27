@@ -3,16 +3,16 @@ FROM node:18-alpine
 WORKDIR /app
 
 # Copy backend package files
-COPY backend/package*.json ./backend/
+COPY backend/package*.json ./
 
 # Install dependencies
-RUN cd backend && npm install
+RUN npm install
 
 # Copy backend source code
-COPY backend/ ./backend/
+COPY backend/ ./
 
 # Expose port
 EXPOSE 5000
 
 # Start the application
-CMD ["npm", "start", "--prefix", "backend"]
+CMD ["npm", "start"]
