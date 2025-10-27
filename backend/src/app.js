@@ -48,11 +48,13 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+console.log('📍 Loading routes...');
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/prompts", promptRoutes);
 app.use("/api/admin", adminRoutes);
+console.log('✅ All routes loaded');
 
 
 // ping/health
