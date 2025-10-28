@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { promptsAPI } from '../services/api';
+import type { Prompt } from '../types';
 
 const History = () => {
-  const [prompts, setPrompts] = useState([]);
+  const [prompts, setPrompts] = useState<Prompt[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [expandedPrompt, setExpandedPrompt] = useState(null);
+  const [expandedPrompt, setExpandedPrompt] = useState<string | null>(null);
 
   useEffect(() => {
     loadHistory();
@@ -25,7 +26,7 @@ const History = () => {
     }
   };
 
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
@@ -35,7 +36,7 @@ const History = () => {
     });
   };
 
-  const toggleExpanded = (promptId) => {
+  const toggleExpanded = (promptId: string) => {
     setExpandedPrompt(expandedPrompt === promptId ? null : promptId);
   };
 
@@ -50,7 +51,7 @@ const History = () => {
   return (
     <div className="container" style={{ marginTop: '40px' }}>
       <div className="card">
-        <h2>📚 Your Learning History</h2>
+        <h2>Your Learning History</h2>
         <p style={{ color: '#6b7280', marginBottom: '32px' }}>
           All your lessons and questions in one place
         </p>
@@ -63,7 +64,7 @@ const History = () => {
 
         {prompts.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '40px' }}>
-            <div style={{ fontSize: '64px', marginBottom: '16px' }}>📖</div>
+            <div style={{ fontSize: '64px', marginBottom: '16px' }}>Book</div>
             <h3>You haven't learned anything yet</h3>
             <p style={{ color: '#6b7280', marginBottom: '24px' }}>
               Start learning to see your history here

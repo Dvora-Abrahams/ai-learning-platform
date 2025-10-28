@@ -31,7 +31,7 @@ const Navbar = () => {
                   </Link>
                 )}
                 <div className="navbar-user">
-                  <span>Hello, {user.name}</span>
+                  <span>Hello, {user?.name}</span>
                   <button onClick={logout} className="btn btn-outline">
                     Logout
                   </button>

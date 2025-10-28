@@ -1,5 +1,4 @@
 import dotenv from "dotenv";
-// dotenv.config();
 dotenv.config({ path: './.env' });
 console.log('🔍 Environment variables:');
 console.log('OPENAI_API_KEY exists:', !!process.env.OPENAI_API_KEY);

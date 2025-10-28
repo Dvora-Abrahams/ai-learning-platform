@@ -1,21 +1,27 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { adminAPI } from '../services/api';
+import type { User, Prompt, PaginationInfo } from '../types';
+
+interface Filters {
+  search: string;
+  role: string;
+}
 
 const Admin = () => {
-  const [users, setUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [userPrompts, setUserPrompts] = useState([]);
+  const [users, setUsers] = useState<User[]>([]);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [userPrompts, setUserPrompts] = useState<Prompt[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   
   // Pagination and filtering
-  const [pagination, setPagination] = useState({
+  const [pagination, setPagination] = useState<PaginationInfo>({
     page: 1,
     limit: 10,
     total: 0,
     pages: 0
   });
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<Filters>({
     search: '',
     role: ''
   });
@@ -39,7 +45,7 @@ const Admin = () => {
       
       setUsers(response.data.users);
       setPagination(response.data.pagination);
-    } catch (err) {
+    } catch (err: any) {
       console.error('Admin: Error loading users:', err);
       setError('Error loading users: ' + (err.response?.data?.message || err.message));
     } finally {
@@ -47,20 +53,20 @@ const Admin = () => {
     }
   };
 
-  const loadUserPrompts = async (userId) => {
+  const loadUserPrompts = async (userId: string) => {
     try {
       console.log('Admin: Loading prompts for user:', userId);
       const response = await adminAPI.getUserPrompts(userId);
       console.log('Admin: User prompts loaded:', response.data);
       setUserPrompts(response.data);
-      setSelectedUser(users.find(u => u._id === userId));
-    } catch (err) {
+      setSelectedUser(users.find(u => u._id === userId) || null);
+    } catch (err: any) {
       console.error('Admin: Error loading user prompts:', err);
       setError('Error loading user activity: ' + (err.response?.data?.message || err.message));
     }
   };
 
-  const deleteUser = async (userId, userName) => {
+  const deleteUser = async (userId: string, userName: string) => {
     if (!window.confirm(`Are you sure you want to delete user "${userName}"? This action cannot be undone.`)) {
       return;
     }
@@ -80,24 +86,18 @@ const Admin = () => {
       }
       
       setError('');
-    } catch (err) {
+    } catch (err: any) {
       console.error('Admin: Error deleting user:', err);
       setError('Error deleting user: ' + (err.response?.data?.message || err.message));
     }
   };
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    setPagination(prev => ({ ...prev, page: 1 }));
-    loadUsers();
-  };
-
-  const handleFilterChange = (key, value) => {
+  const handleFilterChange = (key: keyof Filters, value: string) => {
     setFilters(prev => ({ ...prev, [key]: value }));
     setPagination(prev => ({ ...prev, page: 1 }));
   };
 
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
@@ -118,7 +118,7 @@ const Admin = () => {
   return (
     <div className="container" style={{ marginTop: '40px' }}>
       <div className="card">
-        <h2>⚙️ Admin Panel</h2>
+        <h2>Admin Panel</h2>
         <p style={{ color: '#6b7280', marginBottom: '32px' }}>
           User management and system activity monitoring
         </p>
@@ -170,7 +170,7 @@ const Admin = () => {
             <input
               type="text"
               value={filters.search}
-              onChange={(e) => handleFilterChange('search', e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => handleFilterChange('search', e.target.value)}
               className="form-input"
               placeholder="Search by name or phone..."
             />
@@ -180,7 +180,7 @@ const Admin = () => {
             <label className="form-label">Filter by Role</label>
             <select
               value={filters.role}
-              onChange={(e) => handleFilterChange('role', e.target.value)}
+              onChange={(e: ChangeEvent<HTMLSelectElement>) => handleFilterChange('role', e.target.value)}
               className="form-select"
             >
               <option value="">All Roles</option>

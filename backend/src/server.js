@@ -6,11 +6,9 @@ dotenv.config();
 
 async function startServer() {
   try {
-    // חיבור למסד הנתונים
     await connectDB();
     console.log("✅ MongoDB connected successfully");
 
-    // הפעלת השרת
     const PORT = process.env.PORT || env.PORT || 5000;
     app.listen(PORT, '0.0.0.0', () => {
       console.log(`🚀 Server is running on port ${PORT}`);

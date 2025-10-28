@@ -14,7 +14,7 @@ const Home = () => {
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent'
         }}>
-          🎓 AI Learning Platform
+          AI Learning Platform
         </h1>
         <p style={{ 
           fontSize: '20px', 
@@ -35,7 +35,7 @@ const Home = () => {
         marginBottom: '60px'
       }}>
         <div className="card" style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: '64px', marginBottom: '20px' }}>🤖</div>
+          <div style={{ fontSize: '64px', marginBottom: '20px' }}>AI</div>
           <h3>Advanced AI</h3>
           <p style={{ color: '#6b7280' }}>
             Get detailed and personalized answers to any question
@@ -43,7 +43,7 @@ const Home = () => {
         </div>
 
         <div className="card" style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: '64px', marginBottom: '20px' }}>📚</div>
+          <div style={{ fontSize: '64px', marginBottom: '20px' }}>Topics</div>
           <h3>Diverse Topics</h3>
           <p style={{ color: '#6b7280' }}>
             Learn science, technology, history and many other subjects
@@ -51,7 +51,7 @@ const Home = () => {
         </div>
 
         <div className="card" style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: '64px', marginBottom: '20px' }}>📈</div>
+          <div style={{ fontSize: '64px', marginBottom: '20px' }}>Progress</div>
           <h3>Progress Tracking</h3>
           <p style={{ color: '#6b7280' }}>
             Track your progress and view your learning history
@@ -102,7 +102,7 @@ const Home = () => {
               margin: '0 auto 16px',
               fontSize: '24px'
             }}>
-              1️⃣
+              1
             </div>
             <h4>Choose Topic</h4>
             <p style={{ color: '#6b7280', fontSize: '14px' }}>
@@ -122,7 +122,7 @@ const Home = () => {
               margin: '0 auto 16px',
               fontSize: '24px'
             }}>
-              2️⃣
+              2
             </div>
             <h4>Ask Question</h4>
             <p style={{ color: '#6b7280', fontSize: '14px' }}>
@@ -142,7 +142,7 @@ const Home = () => {
               margin: '0 auto 16px',
               fontSize: '24px'
             }}>
-              3️⃣
+              3
             </div>
             <h4>Get Lesson</h4>
             <p style={{ color: '#6b7280', fontSize: '14px' }}>

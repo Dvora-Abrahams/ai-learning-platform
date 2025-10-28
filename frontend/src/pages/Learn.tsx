@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { categoriesAPI, promptsAPI } from '../services/api';
+import type { Category, SubCategory } from '../types';
 
 const Learn = () => {
-  const [categories, setCategories] = useState([]);
-  const [subCategories, setSubCategories] = useState([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedSubCategory, setSelectedSubCategory] = useState('');
   const [prompt, setPrompt] = useState('');
@@ -24,7 +25,7 @@ const Learn = () => {
     }
   };
 
-  const handleCategoryChange = async (categoryId) => {
+  const handleCategoryChange = async (categoryId: string) => {
     setSelectedCategory(categoryId);
     setSelectedSubCategory('');
     setSubCategories([]);
@@ -39,7 +40,7 @@ const Learn = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!selectedCategory || !selectedSubCategory || !prompt.trim()) {
       setError('Please fill in all fields');
@@ -60,7 +61,7 @@ const Learn = () => {
       console.log('Prompt created successfully:', result.data);
       setResponse(result.data.response);
       setPrompt('');
-    } catch (err) {
+    } catch (err: any) {
       console.error('Error creating prompt:', err);
       setError(err.response?.data?.message || 'Error submitting question');
     } finally {
@@ -71,7 +72,7 @@ const Learn = () => {
   return (
     <div className="container" style={{ marginTop: '40px' }}>
       <div className="card">
-        <h2>🎯 Start Learning</h2>
+        <h2>Start Learning</h2>
         <p style={{ color: '#6b7280', marginBottom: '32px' }}>
           Choose a topic and ask AI any question you want
         </p>
@@ -87,7 +88,7 @@ const Learn = () => {
             <label className="form-label">Category</label>
             <select
               value={selectedCategory}
-              onChange={(e) => handleCategoryChange(e.target.value)}
+              onChange={(e: ChangeEvent<HTMLSelectElement>) => handleCategoryChange(e.target.value)}
               className="form-select"
               required
             >
@@ -105,7 +106,7 @@ const Learn = () => {
               <label className="form-label">Subcategory</label>
               <select
                 value={selectedSubCategory}
-                onChange={(e) => setSelectedSubCategory(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLSelectElement>) => setSelectedSubCategory(e.target.value)}
                 className="form-select"
                 required
               >
@@ -123,12 +124,12 @@ const Learn = () => {
             <label className="form-label">Your Question</label>
             <textarea
               value={prompt}
-              onChange={(e) => setPrompt(e.target.value)}
+              onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setPrompt(e.target.value)}
               className="form-input"
-              rows="4"
+              rows={4}
               placeholder="For example: Explain black holes to me..."
               required
-              minLength="5"
+              minLength={5}
             />
           </div>
 
@@ -150,7 +151,7 @@ const Learn = () => {
 
       {response && (
         <div className="card">
-          <h3>📚 Your Answer</h3>
+          <h3>Your Answer</h3>
           <div style={{ 
             whiteSpace: 'pre-wrap', 
             lineHeight: '1.8',

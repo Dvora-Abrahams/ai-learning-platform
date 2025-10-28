@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, ChangeEvent, FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { authAPI } from '../services/api';
 import { useAuth } from '../context/AuthContext';
+import type { RegisterData } from '../types';
 
 const Register = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<RegisterData>({
     name: '',
     phone: '',
     password: ''
@@ -15,14 +16,14 @@ const Register = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
@@ -33,7 +34,7 @@ const Register = () => {
       
       login(user, token);
       navigate('/dashboard');
-    } catch (err) {
+    } catch (err: any) {
       setError(err.response?.data?.message || 'Registration failed');
     } finally {
       setLoading(false);
@@ -61,7 +62,7 @@ const Register = () => {
               onChange={handleChange}
               className="form-input"
               required
-              minLength="2"
+              minLength={2}
             />
           </div>
 
@@ -88,7 +89,7 @@ const Register = () => {
               onChange={handleChange}
               className="form-input"
               required
-              minLength="6"
+              minLength={6}
             />
           </div>
 
