@@ -332,9 +332,9 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ## Author
 
-**Your Name**
-- GitHub: [@yourusername](https://github.com/yourusername)
-- LinkedIn: [Your LinkedIn](https://linkedin.com/in/yourprofile)
+**Dvora Strizower (Abrahams)**
+- GitHub: https://github.com/Dvora-Abrahams
+
 
 ## Troubleshooting
 
