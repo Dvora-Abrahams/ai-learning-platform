@@ -12,6 +12,7 @@
     "dev": "nodemon src/server.js",
     "seed": "node src/scripts/seedDatabase.js",
     "check-users": "node src/scripts/checkUsers.js",
+    "health": "curl http://localhost:5000/api/health",
     "build": "echo 'Backend build complete'"
   },
   "keywords": [

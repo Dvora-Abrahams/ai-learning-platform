@@ -1,5 +1,7 @@
 import jwt from "jsonwebtoken";
 import { User } from "../models/User.js";
+import { ApiResponse } from "../utils/apiResponse.js";
+import { logError } from "../middleware/logger.js";
 
 const signToken = (user) =>
   jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, {
@@ -11,50 +13,67 @@ export const registerUser = async (req, res) => {
     const { name, phone, password } = req.body;
 
     if (!name || !phone || !password) {
-      return res.status(400).json({ message: "name, phone and password are required" });
+      const response = ApiResponse.badRequest("name, phone and password are required");
+      return res.status(response.statusCode).json(response);
     }
 
     const exists = await User.findOne({ phone });
-    if (exists) return res.status(400).json({ message: "Phone already registered" });
+    if (exists) {
+      const response = ApiResponse.badRequest("Phone already registered");
+      return res.status(response.statusCode).json(response);
+    }
 
     const user = await User.create({ name, phone, password });
     const token = signToken(user);
 
-    res.status(201).json({
-      message: "User registered successfully",
+    const userData = {
       user: { id: user._id, name: user.name, phone: user.phone, role: user.role },
-      token,
-    });
+      token
+    };
+    
+    const response = ApiResponse.created(userData, "User registered successfully");
+    res.status(response.statusCode).json(response);
   } catch (err) {
-    res.status(500).json({ message: "Registration failed", error: err.message });
+    logError(err, req);
+    const response = ApiResponse.error("Registration failed", 500);
+    res.status(response.statusCode).json(response);
   }
 };
 
 export const loginUser = async (req, res) => {
   try {
     const { phone, password } = req.body;
-    console.log('Login attempt:', { phone, password });
+    console.log('Login attempt:', { phone, password: '***' });
 
     const user = await User.findOne({ phone });
     console.log('User found:', user ? { id: user._id, name: user.name, role: user.role } : 'No user found');
     
-    if (!user) return res.status(400).json({ message: "Invalid credentials" });
+    if (!user) {
+      const response = ApiResponse.unauthorized("Invalid credentials");
+      return res.status(response.statusCode).json(response);
+    }
 
     const ok = await user.comparePassword(password);
     console.log('Password check result:', ok);
     
-    if (!ok) return res.status(400).json({ message: "Invalid credentials" });
+    if (!ok) {
+      const response = ApiResponse.unauthorized("Invalid credentials");
+      return res.status(response.statusCode).json(response);
+    }
 
     const token = signToken(user);
     console.log('Login successful for user:', user.name, 'Role:', user.role);
     
-    res.json({
-      message: "Login successful",
+    const userData = {
       user: { id: user._id, name: user.name, phone: user.phone, role: user.role },
-      token,
-    });
+      token
+    };
+    
+    const response = ApiResponse.success(userData, "Login successful");
+    res.json(response);
   } catch (err) {
-    console.error('Login error:', err);
-    res.status(500).json({ message: "Login failed", error: err.message });
+    logError(err, req);
+    const response = ApiResponse.error("Login failed", 500);
+    res.status(response.statusCode).json(response);
   }
 };

@@ -11,10 +11,8 @@ import type {
   User
 } from '../types';
 
-// Use local development server
+// Local development API
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-console.log('🔍 API_BASE_URL:', API_BASE_URL);
-console.log('🔍 VITE_API_URL from env:', import.meta.env.VITE_API_URL);
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -31,6 +29,27 @@ api.interceptors.request.use((config) => {
   }
   return config;
 });
+
+// Response interceptor to handle ApiResponse format
+api.interceptors.response.use(
+  (response) => {
+    // If response has the new ApiResponse format, extract the data
+    if (response.data && typeof response.data === 'object' && 'success' in response.data) {
+      return {
+        ...response,
+        data: response.data.data // Extract the actual data from ApiResponse
+      };
+    }
+    return response;
+  },
+  (error) => {
+    // Handle error responses with ApiResponse format
+    if (error.response?.data && typeof error.response.data === 'object' && 'success' in error.response.data) {
+      error.message = error.response.data.message || error.message;
+    }
+    return Promise.reject(error);
+  }
+);
 
 // Auth API
 export const authAPI = {
