@@ -7,10 +7,12 @@ import env from "../config/env.js";
 
 // Initialize OpenAI client
 let openai = null;
+console.log('🔍 Checking OpenAI API key:', !!env.openaiApiKey);
 if (env.openaiApiKey) {
   try {
     openai = new OpenAI({ apiKey: env.openaiApiKey });
-    console.log("✅ OpenAI client initialized");
+    console.log("✅ OpenAI client initialized successfully");
+    console.log('🔍 OpenAI client exists:', !!openai);
   } catch (e) {
     console.error("❌ OpenAI SDK init failed:", e?.message || e);
     openai = null;
@@ -23,8 +25,10 @@ if (env.openaiApiKey) {
  * Generate AI response (or mock if no API key)
  */
 const aiGenerate = async ({ userPrompt, categoryName, subCategoryName }) => {
+  console.log('🤖 aiGenerate called, openai exists:', !!openai);
   // No API key - return mock response
   if (!openai) {
+    console.log('📝 Returning mock response - no OpenAI client');
     return `Mock AI Response:
 
 📚 Category: ${categoryName || "N/A"}

@@ -1,6 +1,9 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+// FINAL FIX - Hard coded for production
+const API_BASE_URL = 'https://ai-learning-platform-production-6871.up.railway.app/api';
+console.log('🔍 API_BASE_URL:', API_BASE_URL);
+console.log('🔍 VITE_API_URL from env:', import.meta.env.VITE_API_URL);
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -43,4 +46,4 @@ export const adminAPI = {
   deleteUser: (userId) => api.delete(`/admin/users/${userId}`),
 };
 
-export default api;
+export default api;"// Updated $(date)" 

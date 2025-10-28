@@ -48,15 +48,28 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+console.log('📍 Loading routes...');
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/prompts", promptRoutes);
 app.use("/api/admin", adminRoutes);
+console.log('✅ All routes loaded');
 
 
 // ping/health
 app.get("/api/health", (_, res) => res.json({ ok: true }));
+
+// Temporary seed endpoint
+app.get("/api/seed", async (req, res) => {
+  try {
+    const { execSync } = await import('child_process');
+    execSync('npm run seed', { cwd: process.cwd() });
+    res.json({ message: 'Database seeded successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 app.use(notFound);
 app.use(errorHandler);
 
