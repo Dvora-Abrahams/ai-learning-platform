@@ -72,7 +72,7 @@ const Learn = () => {
   return (
     <div className="container" style={{ marginTop: '40px' }}>
       <div className="card">
-        <h2>🎯 Start Learning</h2>
+        <h2>Start Learning</h2>
         <p style={{ color: '#6b7280', marginBottom: '32px' }}>
           Choose a topic and ask AI any question you want
         </p>
@@ -151,7 +151,7 @@ const Learn = () => {
 
       {response && (
         <div className="card">
-          <h3>📚 Your Answer</h3>
+          <h3>Your Answer</h3>
           <div style={{ 
             whiteSpace: 'pre-wrap', 
             lineHeight: '1.8',

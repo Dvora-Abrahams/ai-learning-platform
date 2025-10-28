@@ -6,7 +6,6 @@ const signToken = (user) =>
     expiresIn: "1d",
   });
 
-// POST /api/auth/register
 export const registerUser = async (req, res) => {
   try {
     const { name, phone, password } = req.body;
@@ -31,7 +30,6 @@ export const registerUser = async (req, res) => {
   }
 };
 
-// POST /api/auth/login
 export const loginUser = async (req, res) => {
   try {
     const { phone, password } = req.body;

@@ -43,7 +43,7 @@ const Dashboard = () => {
   return (
     <div className="container" style={{ marginTop: '40px' }}>
       <div className="card">
-        <h1>Welcome, {user?.name}! 👋</h1>
+        <h1>Welcome, {user?.name}!</h1>
         <p style={{ color: '#6b7280', marginBottom: '32px' }}>
           What would you like to learn today?
         </p>
@@ -54,7 +54,7 @@ const Dashboard = () => {
           gap: '24px' 
         }}>
           <div className="card" style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '48px', marginBottom: '16px' }}>🎯</div>
+            <div style={{ fontSize: '48px', marginBottom: '16px' }}>Learn</div>
             <h3>Start Learning</h3>
             <p style={{ color: '#6b7280', marginBottom: '20px' }}>
               Choose a topic and ask AI a question
@@ -65,7 +65,7 @@ const Dashboard = () => {
           </div>
 
           <div className="card" style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '48px', marginBottom: '16px' }}>📚</div>
+            <div style={{ fontSize: '48px', marginBottom: '16px' }}>History</div>
             <h3>Learning History</h3>
             <p style={{ color: '#6b7280', marginBottom: '20px' }}>
               View all the lessons you've received so far
@@ -77,7 +77,7 @@ const Dashboard = () => {
 
           {user?.role === 'admin' && (
             <div className="card" style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: '48px', marginBottom: '16px' }}>⚙️</div>
+              <div style={{ fontSize: '48px', marginBottom: '16px' }}>Admin</div>
               <h3>System Management</h3>
               <p style={{ color: '#6b7280', marginBottom: '20px' }}>
                 View users and system activity

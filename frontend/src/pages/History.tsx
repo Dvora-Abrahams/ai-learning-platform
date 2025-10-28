@@ -51,7 +51,7 @@ const History = () => {
   return (
     <div className="container" style={{ marginTop: '40px' }}>
       <div className="card">
-        <h2>📚 Your Learning History</h2>
+        <h2>Your Learning History</h2>
         <p style={{ color: '#6b7280', marginBottom: '32px' }}>
           All your lessons and questions in one place
         </p>
@@ -64,7 +64,7 @@ const History = () => {
 
         {prompts.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '40px' }}>
-            <div style={{ fontSize: '64px', marginBottom: '16px' }}>📖</div>
+            <div style={{ fontSize: '64px', marginBottom: '16px' }}>Book</div>
             <h3>You haven't learned anything yet</h3>
             <p style={{ color: '#6b7280', marginBottom: '24px' }}>
               Start learning to see your history here

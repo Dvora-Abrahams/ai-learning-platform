@@ -118,7 +118,7 @@ const Admin = () => {
   return (
     <div className="container" style={{ marginTop: '40px' }}>
       <div className="card">
-        <h2>⚙️ Admin Panel</h2>
+        <h2>Admin Panel</h2>
         <p style={{ color: '#6b7280', marginBottom: '32px' }}>
           User management and system activity monitoring
         </p>
