@@ -1,24 +1,24 @@
-# 🎓 AI Learning Platform
+# AI Learning Platform
 
 > Advanced learning platform powered by artificial intelligence
 
 [![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://your-app.vercel.app)
 [![Backend API](https://img.shields.io/badge/API-Live-blue)](https://your-backend.railway.app)
 
-## 🌟 Features
+## Features
 
-- **🤖 AI-Powered Learning** - Get personalized lessons from OpenAI GPT
-- **👥 User Management** - Secure authentication with JWT
-- **📊 Admin Dashboard** - User management with pagination and filtering
-- **📚 Learning History** - Track your progress and view past lessons
-- **🎯 Category System** - Organized learning topics and subtopics
-- **📱 Responsive Design** - Works on all devices
-- **🔒 Role-Based Access** - User and Admin permissions
+- **AI-Powered Learning** - Get personalized lessons from OpenAI GPT
+- **User Management** - Secure authentication with JWT
+- **Admin Dashboard** - User management with pagination and filtering
+- **Learning History** - Track your progress and view past lessons
+- **Category System** - Organized learning topics and subtopics
+- **Responsive Design** - Works on all devices
+- **Role-Based Access** - User and Admin permissions
 
-## 🚀 Live Demo
+## Live Demo
 
-**🌐 Frontend:** [https://your-app.vercel.app](https://your-app.vercel.app)
-**🔗 Backend API:** [https://your-backend.railway.app](https://your-backend.railway.app)
+**Frontend:** [https://your-app.vercel.app](https://your-app.vercel.app)
+**Backend API:** [https://your-backend.railway.app](https://your-backend.railway.app)
 
 ### Demo Credentials
 
@@ -30,7 +30,7 @@
 - Phone: `0501234567`
 - Password: `test123`
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Backend
 - **Node.js** - Runtime environment
@@ -53,7 +53,7 @@
 - **Vercel** - Frontend hosting
 - **MongoDB Atlas** - Database hosting
 
-## 📦 Installation & Setup
+## Installation & Setup
 
 ### Prerequisites
 - Node.js 18+
@@ -79,11 +79,11 @@ cp .env.example .env.local
 npm run dev
 ```
 
-## 🚀 Deployment
+## Deployment
 
 See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions.
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 ai-learning-platform/
@@ -108,7 +108,7 @@ ai-learning-platform/
 └── README.md
 ```
 
-## 🎯 API Endpoints
+## API Endpoints
 
 ### Authentication
 - `POST /api/auth/register` - User registration
@@ -131,14 +131,14 @@ ai-learning-platform/
 - `GET /api/admin/users/:id/prompts` - Get user's prompts
 - `DELETE /api/admin/users/:id` - Delete user
 
-## 🏆 Bonus Features Implemented
+## Bonus Features Implemented
 
-- ✅ **JWT Authentication** - Secure token-based auth
-- ✅ **Pagination & Filtering** - Advanced admin panel
-- ✅ **User Management** - Complete CRUD operations
-- ✅ **Live Deployment** - Production-ready hosting
+- **JWT Authentication** - Secure token-based auth
+- **Pagination & Filtering** - Advanced admin panel
+- **User Management** - Complete CRUD operations
+- **Live Deployment** - Production-ready hosting
 
-## 🧪 Testing
+## Testing
 
 ```bash
 # Backend tests
@@ -150,17 +150,17 @@ cd frontend
 npm test
 ```
 
-## 📄 License
+## License
 
 MIT License - see [LICENSE](LICENSE) file for details.
 
-## 👨‍💻 Author
+## Author
 
 **Your Name**
 - GitHub: [@yourusername](https://github.com/yourusername)
 - LinkedIn: [Your LinkedIn](https://linkedin.com/in/yourprofile)
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the project
 2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
@@ -170,4 +170,4 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ---
 
-⭐ **Star this repo if you found it helpful!**
+**Star this repo if you found it helpful!**

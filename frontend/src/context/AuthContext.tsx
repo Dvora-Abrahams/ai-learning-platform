@@ -1,6 +1,16 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import type { User } from '../types';
 
-const AuthContext = createContext();
+interface AuthContextType {
+  user: User | null;
+  login: (userData: User, token: string) => void;
+  logout: () => void;
+  loading: boolean;
+  isAuthenticated: boolean;
+  isAdmin: boolean;
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -10,8 +20,12 @@ export const useAuth = () => {
   return context;
 };
 
-export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+interface AuthProviderProps {
+  children: ReactNode;
+}
+
+export const AuthProvider = ({ children }: AuthProviderProps) => {
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -24,7 +38,7 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
-  const login = (userData, token) => {
+  const login = (userData: User, token: string) => {
     console.log('AuthContext login:', { userData, token });
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(userData));
@@ -37,7 +51,7 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
-  const value = {
+  const value: AuthContextType = {
     user,
     login,
     logout,

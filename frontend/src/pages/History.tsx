@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { promptsAPI } from '../services/api';
+import type { Prompt } from '../types';
 
 const History = () => {
-  const [prompts, setPrompts] = useState([]);
+  const [prompts, setPrompts] = useState<Prompt[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [expandedPrompt, setExpandedPrompt] = useState(null);
+  const [expandedPrompt, setExpandedPrompt] = useState<string | null>(null);
 
   useEffect(() => {
     loadHistory();
@@ -25,7 +26,7 @@ const History = () => {
     }
   };
 
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
@@ -35,7 +36,7 @@ const History = () => {
     });
   };
 
-  const toggleExpanded = (promptId) => {
+  const toggleExpanded = (promptId: string) => {
     setExpandedPrompt(expandedPrompt === promptId ? null : promptId);
   };
 
